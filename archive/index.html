@@ -80,12 +80,13 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:title" content="archive">
+<meta property="og:url" content="http://yoursite.com/archive/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-05T03:28:43.815Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="archive">
 
 
 
@@ -115,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/archive/">
 
 
 
 
 
-  <title>Hexo</title>
+  <title>archive | Hexo</title>
   
 
 
@@ -140,8 +141,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -276,309 +276,37 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/05/Synchronized锁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
     
+    
+    <div class="post-block page">
       <header class="post-header">
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/05/Synchronized锁/" itemprop="url">Synchronized锁</a></h1>
-        
+	<h1 class="post-title" itemprop="name headline">archive</h1>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-05T12:24:40+08:00">
-                2019-03-05
-              </time>
-            
 
-            
 
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
       
-
       
+      <div class="post-body">
+        
         
           
-            <ol>
-<li>Synchronized实现同步</li>
-</ol>
-<ul>
-<li>同步普通方法，锁当前实例对象</li>
-<li>同步静态方法，锁当前类的Class对象</li>
-<li>同步方法块，锁是Synchronized()里配置的对象</li>
-</ul>
-<ol start="3">
-<li>Synchronized在JVM中的实现原理<br>JVM基于进入和退出Monitor对象来实现同步。编译后插入<code>monitorenter</code>到同步代码块开始的位置，<code>monitorexit</code>插入到方法结束处和异常处。monitor被持有后，进入锁定状态，当线程执行到monitorenter指令时，将尝试获取对象对应的monitor所有权，既尝试获得对象的锁。</li>
-</ol>
-<blockquote>
-<p>synchronized 修饰的方法并没有 monitorenter 指令和 monitorexit 指令，取得代之的确实是 ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法，JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。</p>
-</blockquote>
-<blockquote>
-<p>在 Java 早期版本中，synchronized 属于重量级锁，效率低下，因为监视器锁（monitor）是依赖于底层的操作系统的 Mutex Lock 来实现的，Java 的线程是映射到操作系统的原生线程之上的。如果要挂起或者唤醒一个线程，都需要操作系统帮忙完成，而操作系统实现线程之间的切换时需要从用户态转换到内核态，这个状态之间的转换需要相对比较长的时间，时间成本相对较高，这也是为什么早期的 synchronized 效率低的原因。庆幸的是在 Java 6 之后 Java 官方对从 JVM 层面对synchronized 较大优化，所以现在的 synchronized 锁效率也优化得很不错了。JDK1.6对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销。<a href="https://github.com/Snailclimb/JavaGuide/blob/master/Java%E7%9B%B8%E5%85%B3/synchronized.md" target="_blank" rel="noopener">^1</a></p>
-</blockquote>
-<ol start="4">
-<li>Java对象头<br>存储两部分信息</li>
-</ol>
-<ul>
-<li>对象自身的运行时数据，<ul>
-<li>HashCode</li>
-<li>GC分代年龄</li>
-<li>锁状态标志</li>
-<li>是否偏向锁标记位</li>
-<li>偏向线程ID</li>
-</ul>
-</li>
-</ul>
-<p>这部分数据的长度在32位和64位的虚拟机中分别为32bit和64bit，也叫做Mark Word。考虑到虚拟机的空间效率，Mark Word被设计成一个非固定的数据结构以便在极小的空间内存储尽量多的信息。根据锁状态的不同存储的信息也不同，见下图所示：<br><img src="https://img-blog.csdnimg.cn/20190303192837509.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxNjE3MTIx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>在32位的HotSpot虚拟机中，对象未被锁定的状态下，Mark Word的32bit空间中的25bit用于存储对象HashCode，4bit用于存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0。<br>上图也展示了在其他状态下(轻量级锁定、重量级锁定、GC标记、可偏向)下对象的存储内容。</p>
-<ul>
-<li>存储指向方法区对象类型数据的指针，如果是数组对象的话，还会有一个额外的部分用于存储数组长度。</li>
-</ul>
-<p><code>重量级锁</code>叫重量级的原因，是因为在多线程竞争下，需要操作系统<code>互斥量mutex</code>，这种同步方式的成本非常高，包括系统调用引起的<code>内核态与用户态切换</code>、<code>线程阻塞</code>造成的线程切换等。因此，后来称这种锁为“重量级锁”。</p>
-<ol start="6">
-<li>锁的升级<br>锁有四种状态，从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级不能降级。</li>
-</ol>
-<ul>
-<li>轻量级锁<ul>
-<li>在代码进入同步块时，如果同步对象没有被锁定，即Mark word处于无锁状态(锁标志位为“01”状态，是否为偏向锁为“0”)，虚拟机将在当前线程的栈帧中建立一个名为锁记录(Lock Record)的空间，用于存储锁对象目前的Mark Word的拷贝，官方把这个拷贝加了一个Displaced前缀，即Displaced Mark Word，这时候线程堆栈与对象头的状态如下图所示<br><img src="https://img-blog.csdnimg.cn/20190304161348750.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxNjE3MTIx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
-</ul>
-</li>
-<li>使用CSA操作将对象的Mark Word更新为指向Lock Record的指针，如果这个更新动作成功了，那么这个线程就拥有了该对象的锁。对象Mark Down的锁标志位(Mark Word的最后2bit)转变成”00”，这时候线程堆栈与对象头的状态如下所示：<br><img src="https://img-blog.csdnimg.cn/20190304162258975.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxNjE3MTIx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
-<li>如果<code>更新操作失败</code>了，==虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧==。否则说明这个对象锁已经被其他线程占用了，这时候自旋等待，如果还是没有拿到锁，轻量级锁膨胀为重量级锁，锁标志的状态值变为“10”，Mark Word中存储的就是指向重量级锁(互斥量)的指针，后面等待锁的线程也要进入阻塞状态。<blockquote>
-<p>这里我的理解是这样的，如果线程要获取的对象锁是处于无锁状态，那么到这一步更新操作失败了，已经能够说明是有别的线程在一起竞争，这里的检查Mark Word肯定是会指向别的线程的，不知道为什么书中和网上的资料都说第一步会检查是否指向当前线程。原因可能是如果当前线程要获取的对象锁不是无锁状态，而是处于偏向锁状态了，那么第一步肯定是检查Mark Word是否指向了自己线程的栈帧，如果是，说明当前线程已经拥有了这个锁了，直接进入同步块执行。</p>
-</blockquote>
-</li>
-</ul>
-<p>Java Synchronized原理图见下图<a href="https://ccqy66.github.io/2018/03/07/java%E9%94%81%E5%81%8F%E5%90%91%E9%94%81/" target="_blank" rel="noopener">^2</a><br><img src="https://img-blog.csdnimg.cn/20190304152058814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxNjE3MTIx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>所有的锁见下图[^3]</p>
-<p><img src="https://img-blog.csdnimg.cn/2019030416473153.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMxNjE3MTIx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>[^3]:<a href="https://segmentfault.com/a/1190000017037430" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017037430</a></p>
-
-          
         
+      </div>
+      
+      
       
     </div>
     
     
     
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/04/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/04/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T21:40:26+08:00">
-                2019-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -586,6 +314,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -798,6 +530,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

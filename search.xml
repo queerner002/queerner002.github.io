@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Synchronized锁]]></title>
+    <url>%2F2019%2F03%2F05%2FSynchronized%E9%94%81%2F</url>
+    <content type="text"><![CDATA[Synchronized实现同步 同步普通方法，锁当前实例对象 同步静态方法，锁当前类的Class对象 同步方法块，锁是Synchronized()里配置的对象 Synchronized在JVM中的实现原理JVM基于进入和退出Monitor对象来实现同步。编译后插入monitorenter到同步代码块开始的位置，monitorexit插入到方法结束处和异常处。monitor被持有后，进入锁定状态，当线程执行到monitorenter指令时，将尝试获取对象对应的monitor所有权，既尝试获得对象的锁。 synchronized 修饰的方法并没有 monitorenter 指令和 monitorexit 指令，取得代之的确实是 ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法，JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。 在 Java 早期版本中，synchronized 属于重量级锁，效率低下，因为监视器锁（monitor）是依赖于底层的操作系统的 Mutex Lock 来实现的，Java 的线程是映射到操作系统的原生线程之上的。如果要挂起或者唤醒一个线程，都需要操作系统帮忙完成，而操作系统实现线程之间的切换时需要从用户态转换到内核态，这个状态之间的转换需要相对比较长的时间，时间成本相对较高，这也是为什么早期的 synchronized 效率低的原因。庆幸的是在 Java 6 之后 Java 官方对从 JVM 层面对synchronized 较大优化，所以现在的 synchronized 锁效率也优化得很不错了。JDK1.6对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销。^1 Java对象头存储两部分信息 对象自身的运行时数据， HashCode GC分代年龄 锁状态标志 是否偏向锁标记位 偏向线程ID 这部分数据的长度在32位和64位的虚拟机中分别为32bit和64bit，也叫做Mark Word。考虑到虚拟机的空间效率，Mark Word被设计成一个非固定的数据结构以便在极小的空间内存储尽量多的信息。根据锁状态的不同存储的信息也不同，见下图所示：在32位的HotSpot虚拟机中，对象未被锁定的状态下，Mark Word的32bit空间中的25bit用于存储对象HashCode，4bit用于存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0。上图也展示了在其他状态下(轻量级锁定、重量级锁定、GC标记、可偏向)下对象的存储内容。 存储指向方法区对象类型数据的指针，如果是数组对象的话，还会有一个额外的部分用于存储数组长度。 重量级锁叫重量级的原因，是因为在多线程竞争下，需要操作系统互斥量mutex，这种同步方式的成本非常高，包括系统调用引起的内核态与用户态切换、线程阻塞造成的线程切换等。因此，后来称这种锁为“重量级锁”。 锁的升级锁有四种状态，从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级不能降级。 轻量级锁 在代码进入同步块时，如果同步对象没有被锁定，即Mark word处于无锁状态(锁标志位为“01”状态，是否为偏向锁为“0”)，虚拟机将在当前线程的栈帧中建立一个名为锁记录(Lock Record)的空间，用于存储锁对象目前的Mark Word的拷贝，官方把这个拷贝加了一个Displaced前缀，即Displaced Mark Word，这时候线程堆栈与对象头的状态如下图所示 使用CSA操作将对象的Mark Word更新为指向Lock Record的指针，如果这个更新动作成功了，那么这个线程就拥有了该对象的锁。对象Mark Down的锁标志位(Mark Word的最后2bit)转变成”00”，这时候线程堆栈与对象头的状态如下所示： 如果更新操作失败了，==虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧==。否则说明这个对象锁已经被其他线程占用了，这时候自旋等待，如果还是没有拿到锁，轻量级锁膨胀为重量级锁，锁标志的状态值变为“10”，Mark Word中存储的就是指向重量级锁(互斥量)的指针，后面等待锁的线程也要进入阻塞状态。 这里我的理解是这样的，如果线程要获取的对象锁是处于无锁状态，那么到这一步更新操作失败了，已经能够说明是有别的线程在一起竞争，这里的检查Mark Word肯定是会指向别的线程的，不知道为什么书中和网上的资料都说第一步会检查是否指向当前线程。原因可能是如果当前线程要获取的对象锁不是无锁状态，而是处于偏向锁状态了，那么第一步肯定是检查Mark Word是否指向了自己线程的栈帧，如果是，说明当前线程已经拥有了这个锁了，直接进入同步块执行。 Java Synchronized原理图见下图^2所有的锁见下图[^3] [^3]:https://segmentfault.com/a/1190000017037430]]></content>
+      <tags>
+        <tag>Synchronized 并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2019%2F03%2F04%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
